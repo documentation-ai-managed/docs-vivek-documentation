@@ -1,0 +1,136 @@
+---
+title: Setup
+description: Complete guide to setting up your Vivek Documentation space
+---
+
+Setting up Vivek Documentation is straightforward and takes just a few minutes. This guide walks you through creating your account, configuring your first documentation space, and adding initial content.
+
+<Steps>
+  <Step title="Create Account" icon="user">
+    Visit the Vivek Documentation website and click "Sign Up". Provide your email address and choose a strong password. You'll receive a verification email to activate your account.
+    
+    <CodeGroup tabs="bash,cURL">
+      ```bash
+# After verification, login to get your API key
+echo "API Key: $VIVEK_API_KEY"
+      ```
+      ```bash
+curl -X POST \
+  'https://api.vivekdocs.com/v1/auth/login' \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"your@email.com","password":"yourpassword"}'
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Configure API Access" icon="settings">
+    Once logged in, navigate to your account settings to generate an API key. This key will be used for programmatic access to your documentation.
+    
+    ```javascript
+const config = {
+  apiKey: 'sk-1234567890abcdef',
+  baseUrl: 'https://api.vivekdocs.com/v1'
+};
+    ```
+  </Step>
+  <Step title="Create Documentation Space" icon="folder">
+    Create your first documentation space. Choose a meaningful name and description that reflects your project's purpose.
+    
+    <Request tabs="JavaScript" show-lines="true">
+      ```javascript
+const spaceData = {
+  name: 'Project Alpha Documentation',
+  description: 'Comprehensive docs for Project Alpha',
+  visibility: 'private'
+};
+
+const response = await fetch('/v1/spaces', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(spaceData)
+});
+      ```
+    </Request>
+  </Step>
+  <Step title="Add Initial Pages" icon="file-text">
+    Start adding pages to your documentation space. You can create pages for different topics like getting started, API reference, and troubleshooting.
+    
+    <CodeGroup tabs="Python">
+      ```python
+space = client.create_space(
+    name="Project Docs",
+    description="Main documentation space"
+)
+
+# Add first page
+page = space.create_page(
+    title="Welcome",
+    content="# Welcome to Project Docs\n\nThis is the starting point."
+)
+print(f"Created page: {page.title}")
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+<Callout kind="info">
+Remember to keep your API key secure and never share it publicly. Use environment variables for storing sensitive credentials.
+</Callout>
+
+## Environment Configuration
+
+Vivek Documentation supports multiple environments for testing and production deployments. Configure your environment settings to match your development workflow.
+
+<Tabs>
+  <Tab title="Development" icon="code">
+    For local development, use the sandbox environment with unlimited API calls.
+    
+    ```bash
+export VIVEK_ENV=development
+export VIVEK_API_URL=https://sandbox.vivekdocs.com/v1
+    ```
+  </Tab>
+  <Tab title="Production" icon="server">
+    Production environment with full features and higher rate limits.
+    
+    ```bash
+export VIVEK_ENV=production
+export VIVEK_API_URL=https://api.vivekdocs.com/v1
+    ```
+  </Tab>
+</Tabs>
+
+<Expandable title="Advanced Configuration" default-open="false">
+For advanced setups, you can configure webhooks, custom domains, and team permissions. These features allow for deeper integration with your existing workflows.
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Webhooks | Real-time notifications | Disabled |
+| Custom Domain | Use your own domain | Not set |
+| Team Roles | Permission levels | Owner only |
+| Rate Limits | API call limits | 1000/hour |
+</Expandable>
+
+## Troubleshooting Common Issues
+
+If you encounter problems during setup, here are some common solutions:
+
+<ExpandableGroup>
+  <Expandable title="API Key Not Working" default-open="false">
+    Ensure your API key is correctly copied and hasn't expired. Check your account settings for key regeneration if needed.
+  </Expandable>
+  <Expandable title="Space Creation Failed" default-open="false">
+    Verify you have the necessary permissions and that the space name is unique within your account.
+  </Expandable>
+  <Expandable title="Page Upload Errors" default-open="false">
+    Check file size limits and supported formats. Large files may need to be split or compressed.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="success">
+Once setup is complete, you can invite team members and start collaborating on your documentation immediately.
+</Callout>
+
+By following this comprehensive setup guide, you'll have your Vivek Documentation space configured and ready for use in no time. The platform's flexibility allows you to customize it further as your documentation needs evolve.

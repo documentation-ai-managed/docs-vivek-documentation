@@ -1,0 +1,145 @@
+---
+title: Authentication
+description: Learn how to authenticate with Vivek Documentation APIs
+---
+
+Authentication is crucial for securing access to your Vivek Documentation spaces and ensuring that only authorized users can view or modify your content. This guide covers the different authentication methods available.
+
+<Callout kind="info">
+All API requests to Vivek Documentation require authentication. Choose the method that best fits your use case.
+</Callout>
+
+## API Key Authentication
+
+The primary authentication method for Vivek Documentation is API key-based authentication. You can generate API keys from your account dashboard.
+
+<Steps>
+  <Step title="Generate API Key" icon="key">
+    Log into your Vivek Documentation account and navigate to the API Keys section. Click "Generate New Key" and give it a descriptive name.
+    
+    ```javascript
+const apiKey = 'sk-1234567890abcdef1234567890abcdef';
+// Store securely, never commit to version control
+    ```
+  </Step>
+  <Step title="Include in Requests" icon="send">
+    Include the API key in the Authorization header for all API requests.
+    
+    <CodeGroup tabs="cURL,JavaScript,Python">
+      ```bash
+curl -X GET \
+  'https://api.vivekdocs.com/v1/spaces' \
+  -H 'Authorization: Bearer sk-1234567890abcdef'
+      ```
+      ```javascript
+const response = await fetch('/v1/spaces', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`
+  }
+});
+      ```
+      ```python
+import requests
+
+headers = {'Authorization': f'Bearer {api_key}'}
+response = requests.get('https://api.vivekdocs.com/v1/spaces', headers=headers)
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Rotate Keys Regularly" icon="refresh-cw">
+    For security, rotate your API keys periodically and revoke old ones.
+  </Step>
+</Steps>
+
+## OAuth Integration
+
+For web applications, Vivek Documentation supports OAuth 2.0 authentication, allowing users to authenticate through their existing accounts.
+
+<Tabs>
+  <Tab title="Authorization Code Flow" icon="lock">
+    Recommended for web applications with server-side components.
+    
+    ```javascript
+// Step 1: Redirect to authorization URL
+const authUrl = `https://api.vivekdocs.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+window.location.href = authUrl;
+
+// Step 2: Exchange code for access token
+const tokenResponse = await fetch('/oauth/token', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    grant_type: 'authorization_code',
+    client_id: clientId,
+    client_secret: clientSecret,
+    code: authorizationCode,
+    redirect_uri: redirectUri
+  })
+});
+const { access_token } = await tokenResponse.json();
+    ```
+  </Tab>
+  <Tab title="Implicit Flow" icon="zap">
+    Suitable for single-page applications.
+    
+    ```javascript
+// Handle the redirect with access token in URL fragment
+const hash = window.location.hash.substring(1);
+const params = new URLSearchParams(hash);
+const accessToken = params.get('access_token');
+    ```
+  </Tab>
+</Tabs>
+
+<Callout kind="danger">
+Never expose your client secret in client-side code. Use the authorization code flow for server-side applications.
+</Callout>
+
+## Token Management
+
+Vivek Documentation uses JWT (JSON Web Tokens) for maintaining authenticated sessions. Tokens have expiration times and should be refreshed periodically.
+
+<Expandable title="Token Refresh Process" default-open="false">
+When your access token expires, use the refresh token to obtain a new one without requiring user re-authentication.
+
+```javascript
+const refreshResponse = await fetch('/oauth/token', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    grant_type: 'refresh_token',
+    client_id: clientId,
+    client_secret: clientSecret,
+    refresh_token: refreshToken
+  })
+});
+const { access_token: newAccessToken } = await refreshResponse.json();
+```
+</Expandable>
+
+## Permission Scopes
+
+Control what actions authenticated users can perform by assigning appropriate permission scopes.
+
+| Scope | Description | Required |
+|-------|-------------|----------|
+| `read:spaces` | View documentation spaces | Basic |
+| `write:spaces` | Create and modify spaces | Advanced |
+| `admin:account` | Manage account settings | Admin |
+| `webhook:manage` | Configure webhooks | Advanced |
+
+<ExpandableGroup>
+  <Expandable title="Scope Best Practices" default-open="false">
+    Always request the minimum scopes required for your application. This follows the principle of least privilege and improves security.
+  </Expandable>
+  <Expandable title="Troubleshooting Auth Issues" default-open="false">
+    If authentication fails, check token expiration, correct API endpoints, and proper header formatting. Use the developer console to inspect network requests.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="tip">
+For testing authentication, use the sandbox environment which provides unlimited API calls and doesn't affect production data.
+</Callout>
+
+By understanding and implementing proper authentication methods, you can ensure secure and reliable access to your Vivek Documentation resources.

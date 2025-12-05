@@ -1,0 +1,175 @@
+---
+title: Configuration
+description: Advanced configuration options for Vivek Documentation
+---
+
+Vivek Documentation offers extensive configuration options to customize your documentation spaces according to your specific needs. From basic settings to advanced integrations, this guide covers all available configuration methods.
+
+<Callout kind="info">
+Configuration can be managed through the web interface, API calls, or configuration files depending on your setup.
+</Callout>
+
+## Basic Configuration
+
+Start with fundamental settings that control how your documentation space behaves and appears.
+
+<Steps>
+  <Step title="Space Settings" icon="settings">
+    Configure basic space properties like name, description, and visibility.
+    
+    ```javascript
+const spaceConfig = {
+  name: 'Advanced Documentation',
+  description: 'Technical documentation with advanced features',
+  visibility: 'team', // 'public', 'team', or 'private'
+  theme: 'dark',
+  language: 'en'
+};
+    ```
+  </Step>
+  <Step title="User Permissions" icon="users">
+    Set up role-based access control for team members.
+    
+    <CodeGroup tabs="Python,cURL">
+      ```python
+# Add team member with specific role
+space.add_member(
+    email='colleague@company.com',
+    role='editor',  # 'viewer', 'editor', 'admin'
+    permissions=['read', 'write', 'delete']
+)
+      ```
+      ```bash
+curl -X POST \
+  'https://api.vivekdocs.com/v1/spaces/space-id/members' \
+  -H 'Authorization: Bearer your-api-key' \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"colleague@company.com","role":"editor"}'
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Content Organization" icon="folder">
+    Structure your documentation with categories and tags.
+    
+    ```javascript
+const categories = [
+  { name: 'Getting Started', icon: 'rocket' },
+  { name: 'API Reference', icon: 'code' },
+  { name: 'Troubleshooting', icon: 'alert-circle' }
+];
+    ```
+  </Step>
+</Steps>
+
+## Advanced Integrations
+
+Enhance your documentation workflow with powerful integrations and automation features.
+
+<Tabs>
+  <Tab title="Webhooks" icon="webhook">
+    Set up webhooks to receive real-time notifications about documentation changes.
+    
+    ```javascript
+const webhookConfig = {
+  url: 'https://your-app.com/webhook/docs-update',
+  events: ['page.created', 'page.updated', 'space.modified'],
+  secret: 'webhook-secret-key'
+};
+
+await client.createWebhook(webhookConfig);
+    ```
+  </Tab>
+  <Tab title="Custom Domains" icon="globe">
+    Use your own domain for branded documentation URLs.
+    
+    ```bash
+# Configure DNS records
+# Add CNAME record: docs.yourcompany.com -> docs.vivekdocs.com
+
+# Then configure in Vivek
+curl -X PUT \
+  'https://api.vivekdocs.com/v1/spaces/space-id/domain' \
+  -H 'Authorization: Bearer your-api-key' \
+  -d '{"domain":"docs.yourcompany.com"}'
+    ```
+  </Tab>
+  <Tab title="Version Control" icon="git-branch">
+    Integrate with Git for version control and collaboration.
+    
+    ```bash
+# Initialize Git repository
+git init
+git add .
+git commit -m "Initial documentation setup"
+
+# Push to remote repository
+git remote add origin https://github.com/your-org/docs.git
+git push -u origin main
+    ```
+  </Tab>
+</Tabs>
+
+<Callout kind="tip">
+Webhooks can trigger automated workflows like building documentation sites, sending notifications, or updating related systems.
+</Callout>
+
+## Performance Optimization
+
+Configure settings to optimize loading times and user experience.
+
+<Expandable title="Caching Strategies" default-open="false">
+Implement caching to reduce load times and API calls.
+
+| Cache Type | Duration | Use Case |
+|------------|----------|----------|
+| Browser Cache | 1 hour | Static assets |
+| CDN Cache | 24 hours | Public content |
+| API Cache | 5 minutes | Dynamic data |
+</Expandable>
+
+## Security Settings
+
+Protect your documentation with advanced security configurations.
+
+<ExpandableGroup>
+  <Expandable title="IP Whitelisting" default-open="false">
+    Restrict access to specific IP addresses or ranges for enhanced security.
+  </Expandable>
+  <Expandable title="Audit Logging" default-open="false">
+    Enable detailed logging of all documentation changes and access attempts.
+  </Expandable>
+  <Expandable title="Data Encryption" default-open="false">
+    Configure encryption settings for sensitive documentation content.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="warning">
+Always test configuration changes in a development environment before applying them to production.
+</Callout>
+
+## Configuration Files
+
+For automated deployments, use configuration files to define your documentation setup.
+
+```yaml
+# vivek-docs.yaml
+space:
+  name: "My Documentation"
+  theme: "dark"
+  integrations:
+    webhooks:
+      - url: "https://ci.example.com/webhook"
+        events: ["page.updated"]
+    github:
+      repo: "myorg/docs"
+      branch: "main"
+users:
+  - email: "admin@company.com"
+    role: "admin"
+```
+
+<Callout kind="success">
+With these configuration options, you can create a documentation system that perfectly matches your team's workflow and requirements.
+</Callout>
+
+This comprehensive configuration guide ensures you can fully customize Vivek Documentation to meet your specific organizational needs.

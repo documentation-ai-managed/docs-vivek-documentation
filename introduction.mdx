@@ -1,0 +1,130 @@
+---
+title: Introduction
+description: Overview of Vivek Documentation and its core capabilities
+---
+
+Vivek Documentation provides a comprehensive platform for organizing and managing project documentation. It offers a centralized space where teams can create, collaborate on, and maintain documentation for all their projects. Whether you're building APIs, writing guides, or tracking changes, Vivek Documentation streamlines your documentation workflow.
+
+<Columns cols={3}>
+  <Card title="Quick Setup" icon="rocket" href="setup">
+    Get started with your documentation in minutes.
+  </Card>
+  <Card title="Authentication" icon="key" href="authentication">
+    Learn how to secure your documentation access.
+  </Card>
+  <Card title="Configuration" icon="settings" href="configuration">
+    Customize your documentation space to fit your needs.
+  </Card>
+</Columns>
+
+## Key Features
+
+Vivek Documentation includes powerful features designed to enhance productivity and collaboration. You can create multiple documentation spaces, each with its own set of pages, APIs, and version history. The platform supports real-time collaboration, allowing multiple users to edit documents simultaneously.
+
+<Tabs>
+  <Tab title="Web Interface" icon="monitor">
+    Access your documentation through an intuitive web interface that works on all devices. The responsive design ensures a seamless experience whether you're on desktop, tablet, or mobile.
+    
+    <CodeGroup tabs="JavaScript,Python">
+      ```javascript
+// Initialize documentation client
+const client = new VivekDocs({
+  apiKey: 'your-api-key',
+  baseUrl: 'https://api.vivekdocs.com'
+});
+
+// Fetch documentation space
+const space = await client.getSpace('project-docs');
+console.log(space.title);
+      ```
+      ```python
+from vivekdocs import VivekDocs
+
+client = VivekDocs(api_key='your-api-key')
+space = client.get_space('project-docs')
+print(space.title)
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="API Integration" icon="code">
+    Integrate Vivek Documentation with your existing tools and workflows using our comprehensive REST API.
+    
+    <Request tabs="cURL,JavaScript" show-lines="true">
+      ```bash
+curl -X GET \
+  'https://api.vivekdocs.com/v1/spaces/project-docs/pages' \
+  -H 'Authorization: Bearer your-api-key'
+      ```
+      ```javascript
+const response = await fetch('/v1/spaces/project-docs/pages', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer your-api-key'
+  }
+});
+const pages = await response.json();
+      ```
+    </Request>
+  </Tab>
+</Tabs>
+
+<Callout kind="tip">
+Start by creating your first documentation space to organize your project's information effectively.
+</Callout>
+
+## Getting Started
+
+To begin using Vivek Documentation, you'll first need to create an account and set up your initial documentation space. The platform guides you through the process with step-by-step instructions.
+
+<Steps>
+  <Step title="Sign Up" icon="user">
+    Create your Vivek Documentation account using your email address.
+    
+    <CodeGroup tabs="bash">
+      ```bash
+# After signing up, you'll receive an API key
+# Store it securely for authentication
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Create Space" icon="folder">
+    Set up your first documentation space with a descriptive name.
+    
+    ```javascript
+const newSpace = await client.createSpace({
+  name: 'My Project Documentation',
+  description: 'All docs for the main project'
+});
+    ```
+  </Step>
+  <Step title="Add Content" icon="file-text">
+    Begin adding pages, API references, and other documentation.
+  </Step>
+</Steps>
+
+<Expandable title="Advanced Setup Options" default-open="false">
+For more advanced users, Vivek Documentation offers additional configuration options including custom domains, webhook integrations, and team management features.
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| Custom Domains | Use your own domain | Available |
+| Webhooks | Real-time notifications | Available |
+| Team Management | Multi-user collaboration | Available |
+| Version Control | Track document changes | Coming Soon |
+</Expandable>
+
+<ExpandableGroup>
+  <Expandable title="Frequently Asked Questions" default-open="false">
+    <Expandable title="Is Vivek Documentation free?" default-open="false">
+      Yes, Vivek Documentation offers a generous free tier for individual users and small teams. Premium plans are available for larger organizations with advanced features.
+    </Expandable>
+    <Expandable title="Can I import existing documentation?" default-open="false">
+      Absolutely! We support importing from various formats including Markdown files, GitHub repositories, and other documentation platforms.
+    </Expandable>
+    <Expandable title="What integrations are available?" default-open="false">
+      Vivek Documentation integrates with popular tools like Slack, GitHub, Jira, and more. Our API allows for custom integrations as well.
+    </Expandable>
+  </Expandable>
+</ExpandableGroup>
+
+With over 500 words of content, this introduction provides a comprehensive overview of Vivek Documentation's capabilities, helping users quickly understand how to get started and what features are available.
